@@ -1,6 +1,8 @@
 import express from "express";
 import apiRouter from "./apiRouter.js";
 import mongoose from "mongoose";
+import list from "express-list-endpoints";
+import { genericError } from "./middlewares/genericError.js";
 
 const server = express();
 
@@ -8,13 +10,14 @@ const port = 3030;
 
 server.use("/api", apiRouter);
 
+server.use(genericError);
+
 mongoose
-  .connect(
-    "mongodb+srv://cetesi3456:U97LeWCPeynUejx@epicode-wdpt0323.7cj4hoj.mongodb.net/epicode"
-  )
+  .connect(process.env.MONGO_URL)
   .then(() => {
     server.listen(port, () => {
       console.log("🚀 Server listening to port: " + port);
+      console.log(list(server));
     });
   })
   .catch(() => {
