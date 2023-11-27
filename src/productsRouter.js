@@ -6,7 +6,25 @@ const productRouter = express.Router();
 productRouter
   .get("/", async (req, res, next) => {
     try {
-      const products = await Product.find({});
+      const { limit, skip, sortBy, order } = req.query;
+      const products = await Product.find({
+        // price: { $gte: 300 },
+        // $and: [{ price: { $gte: 100 } }, { price: { $lte: 110 } }],
+      })
+        // .select("-_id")
+        .sort(
+          sortBy && order
+            ? {
+                // "price": "ascending" | "descending"
+                // "brand": "ascending" | "descending"
+                // "name": "ascending" | "descending"
+                [sortBy]: order,
+              }
+            : undefined
+        )
+        .skip(skip)
+        .limit(limit);
+
       res.json(products);
     } catch (error) {
       next(error);
