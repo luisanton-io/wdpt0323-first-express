@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./userRouter.js";
+import productRouter from "./productsRouter.js";
 
 const apiRouter = express.Router();
 
@@ -34,5 +35,6 @@ apiRouter.post("/body", (req, res) => {
 });
 
 apiRouter.use("/users", userRouter);
+apiRouter.use("/products", productRouter);
 
 export default apiRouter;
